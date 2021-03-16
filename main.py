@@ -120,14 +120,67 @@ if __name__ == '__main__':
         checkpoint_cpu_environment_lines = checkpoint_cpu_environment_command.split('\n')
         cpu_temp = 0
         # ddr_temp = 0
-        #
-        # for line in checkpoint_cpu_environment_lines:
-        #     if 'CPU Temperature' in line:
-        #        continue
-        #     vars = line.split()
-        #     # cpu_temp = vars[2]
-        #     # ddr_temp = vars[4]
-        # print(checkpoint_cpu_environment_command)
+
+        for line in checkpoint_cpu_environment_lines:
+            # Temperature Sensors
+            if 'CPU Temperature ' in line:
+                vars = line.split()
+                vars = line.split("|")
+                cpu_temperature = vars[2]
+
+            if 'CPU Temperature(internal)' in line:
+                vars = line.split()
+                vars = line.split("|")
+                cpu_temperature_internal = vars[2]
+
+            if 'DDR Temperature' in line:
+                vars = line.split()
+                vars = line.split("|")
+                ddr_temperature = vars[2]
+
+            if 'WIFI1 Temperature' in line:
+                vars = line.split()
+                vars = line.split("|")
+                wifi1_temperature = vars[2]
+
+            # Voltage Sensors
+            if 'Voltage 3V3' in line:
+                vars = line.split()
+                vars = line.split("|")
+                voltage_3v3 = vars[2]
+            if 'Voltage 12V' in line:
+                vars = line.split()
+                vars = line.split("|")
+                voltage_12v = vars[2]
+            if 'Voltage 1V8' in line:
+                vars = line.split()
+                vars = line.split("|")
+                voltage_1v8 = vars[2]
+            if 'Voltage 0V9' in line:
+                vars = line.split()
+                vars = line.split("|")
+                voltage_0v9 = vars[2]
+            if 'Voltage 1V2' in line:
+                vars = line.split()
+                vars = line.split("|")
+                voltage_1v2 = vars[2]
+            if 'Voltage 1V2_SRM' in line:
+                vars = line.split()
+                vars = line.split("|")
+                voltage_1V2_SRM = vars[2]
+
+
+        print(checkpoint_cpu_environment_command)
+        print(cpu_temperature)
+        print(cpu_temperature_internal)
+        print(ddr_temperature)
+        print(wifi1_temperature)
+        print(voltage_3v3)
+        print(voltage_12v)
+        print(voltage_1v8)
+        print(voltage_0v9)
+        print(voltage_1v2)
+        print(voltage_1V2_SRM)
         # print(cpu_temp)
 
 
