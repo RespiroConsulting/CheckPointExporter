@@ -8,8 +8,13 @@ import random
 from getpass import getpass
 import yaml
 import sys
+import os
 
 # get credentials
+os.system("python -m pip install –upgrade pip")
+os.system("pip3 install netmiko")
+os.system("pip3 install paramiko")
+os.system("pip 3 install prometheus_client")
 
 with open(r'user_credentials.yaml') as yamlfile:
     user_credentials = yaml.load(yamlfile, Loader=yaml.FullLoader)
