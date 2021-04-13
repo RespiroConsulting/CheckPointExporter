@@ -39,6 +39,26 @@ if __name__ == '__main__':
                                                 'This is gauge to get cpu interrupts per second count of Checkpoint')
     checkpoint_cpu_user_count_number = Gauge('checkpoint_cpu_user_count_number',
                                                 'This is gauge to get cpu number in count of Checkpoint')
+    checkpoint_cpu_temperature = Gauge('checkpoint_cpu_temperature',
+                                             'This is gauge to get cpu temperature in celsius of Checkpoint')
+    checkpoint_cpu_temperature_internal = Gauge('checkpoint_cpu_temperature_internal',
+                                             'This is gauge to get cpu internal temperature in celsius of Checkpoint')
+    checkpoint_cpu_ddr_temperature = Gauge('checkpoint_cpu_ddr_temperature',
+                                             'This is gauge to get cpu ddr temperature in celsius of Checkpoint')
+    checkpoint_cpu_wifi1_temperature = Gauge('checkpoint_cpu_wifi1_temperature',
+                                           'This is gauge to get cpu WiFi1 temperature in celsius of Checkpoint')
+    checkpoint_cpu_voltage_3v3= Gauge('checkpoint_cpu_voltage_3v3',
+                                       'This is gauge to get cpu voltage of 3v3 in volt of Checkpoint')
+    checkpoint_cpu_voltage_12v = Gauge('checkpoint_cpu_voltage_12v',
+                                       'This is gauge to get cpu voltage of 12v in volt of Checkpoint')
+    checkpoint_cpu_voltage_1v8 = Gauge('checkpoint_cpu_voltage_1v8',
+                                       'This is gauge to get cpu voltage of 1v8 in volt of Checkpoint')
+    checkpoint_cpu_voltage_0v9 = Gauge('checkpoint_cpu_voltage_0v9',
+                                       'This is gauge to get cpu voltage of 0v9 in volt of Checkpoint')
+    checkpoint_cpu_voltage_1v2 = Gauge('checkpoint_cpu_voltage_1v2',
+                                       'This is gauge to get cpu voltage of 1v2 in volt of Checkpoint')
+    checkpoint_cpu_voltage_1v2_SRM = Gauge('checkpoint_cpu_voltage_1v2_SRM',
+                                       'This is gauge to get cpu voltage of 1v2 SRM in volt of Checkpoint')
 
     start_http_server(8000)
 
@@ -183,8 +203,6 @@ if __name__ == '__main__':
         print(voltage_1V2_SRM)
         # print(cpu_temp)
 
-
-
         # disconnect
 
         net_connect.disconnect()
@@ -197,6 +215,16 @@ if __name__ == '__main__':
         checkpoint_cpu_usage_percentage.set(cpu_usage_percentage)
         checkpoint_cpu_interrupts_per_second_count.set(cpu_interrupts_per_sec_number)
         checkpoint_cpu_user_count_number.set(cpu_count_number)
+        checkpoint_cpu_temperature.set(cpu_temperature)
+        checkpoint_cpu_temperature_internal.set(cpu_temperature_internal)
+        checkpoint_cpu_ddr_temperature.set(ddr_temperature)
+        checkpoint_cpu_wifi1_temperature.set(wifi1_temperature)
+        checkpoint_cpu_voltage_3v3.set(voltage_3v3)
+        checkpoint_cpu_voltage_12v.set(voltage_12v)
+        checkpoint_cpu_voltage_1v8.set(voltage_1v8)
+        checkpoint_cpu_voltage_0v9.set(voltage_1v2)
+        checkpoint_cpu_voltage_1v2.set(voltage_1v2)
+        checkpoint_cpu_voltage_1v2_SRM.set(voltage_1V2_SRM)
 
 
 
