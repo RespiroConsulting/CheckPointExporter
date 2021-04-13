@@ -2,7 +2,7 @@
 This exporter will connect to Checkpoint device and will fetch number of current VPN users in the checkpoint and status of CPU hardware.
 There are two methods to visualise the data.
 First one is exporting data to Prometheus server, and it will anticipate the data into metrics.
-Second option is exposing data over HTTP (on specific port) (here we are using 8000). in this method exporter will expose all data over HTTP in prometheus data format.
+Second option is exposing data over HTTP (on specific port) (here we are using 9994). in this method exporter will expose all data over HTTP in prometheus data format.
 
 ##Execution
 Populate the user_credentials.yaml file with Checkpoint USERNAME and PASSWORD along with Checkpoint device name and login page url.

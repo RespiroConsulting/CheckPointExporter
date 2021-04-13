@@ -60,7 +60,7 @@ if __name__ == '__main__':
     checkpoint_cpu_voltage_1v2_SRM = Gauge('checkpoint_cpu_voltage_1v2_SRM',
                                        'This is gauge to get cpu voltage of 1v2 SRM in volt of Checkpoint')
 
-    start_http_server(8000)
+    start_http_server(9994)
 
     while True:
 
