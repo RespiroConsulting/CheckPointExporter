@@ -9,13 +9,9 @@ from getpass import getpass
 import yaml
 import sys
 import os
+import time
 
 # get credentials
-os.system("python -m pip install –upgrade pip")
-os.system("pip3 install netmiko")
-os.system("pip3 install paramiko")
-os.system("pip3 install prometheus_client")
-
 with open(r'user_credentials.yaml') as yamlfile:
     user_credentials = yaml.load(yamlfile, Loader=yaml.FullLoader)
     # print(user_credentials)
@@ -65,15 +61,19 @@ if __name__ == '__main__':
     checkpoint_cpu_voltage_1v2_SRM = Gauge('checkpoint_cpu_voltage_1v2_SRM',
                                        'This is gauge to get cpu voltage of 1v2 SRM in volt of Checkpoint')
 
-    start_http_server(9994)
+    # os.system('python -m http.server 9994 --bind 192.168.1.135')
+    start_http_server(9994) # Localhost by default at http://localhost:9994/
+
 
     while True:
+
+
 
         # define connector
 
         fwext = {
             'device_type': device_type,
-            'ip': ip,
+            'host': ip,
             'username': user,
             'password': passwd,
         }
@@ -103,13 +103,14 @@ if __name__ == '__main__':
         for line in vpn_users_lines:
             if 'NAME' in line:
                 continue
-            vars = line.split()
-            current = vars[3]
-            peak = vars[4]
+            var = line.split()
+            vars2 = line.split()
+            current = var[3]
+            peak = vars2[4]
             print(vpn_users)
 
-            # print("Current Remote Users: ", current)
-            # print("Peak number of users:", peak)
+            print("Current Remote Users: ", current)
+            print("Peak number of users:", peak)
 
         checkpoint_cpu_status_command = net_connect.send_command("cpstat os -f cpu")
         cpu_status_lines = checkpoint_cpu_status_command.split('\n')
@@ -139,7 +140,7 @@ if __name__ == '__main__':
             if 'CPUs Number' in line:
                 vars = line.split()
                 cpu_count_number = vars[2]
-        print(checkpoint_cpu_status_command)
+        # print(checkpoint_cpu_status_command)
 
         checkpoint_cpu_environment_command = net_connect.send_command("cpstat os -f sensors")
         checkpoint_cpu_environment_lines = checkpoint_cpu_environment_command.split('\n')
@@ -149,63 +150,63 @@ if __name__ == '__main__':
         for line in checkpoint_cpu_environment_lines:
             # Temperature Sensors
             if 'CPU Temperature ' in line:
-                vars = line.split()
+
                 vars = line.split("|")
                 cpu_temperature = vars[2]
 
             if 'CPU Temperature(internal)' in line:
-                vars = line.split()
+
                 vars = line.split("|")
                 cpu_temperature_internal = vars[2]
 
             if 'DDR Temperature' in line:
-                vars = line.split()
+
                 vars = line.split("|")
                 ddr_temperature = vars[2]
 
             if 'WIFI1 Temperature' in line:
-                vars = line.split()
+
                 vars = line.split("|")
                 wifi1_temperature = vars[2]
 
             # Voltage Sensors
             if 'Voltage 3V3' in line:
-                vars = line.split()
+
                 vars = line.split("|")
                 voltage_3v3 = vars[2]
             if 'Voltage 12V' in line:
-                vars = line.split()
+
                 vars = line.split("|")
                 voltage_12v = vars[2]
             if 'Voltage 1V8' in line:
-                vars = line.split()
+
                 vars = line.split("|")
                 voltage_1v8 = vars[2]
             if 'Voltage 0V9' in line:
-                vars = line.split()
+
                 vars = line.split("|")
                 voltage_0v9 = vars[2]
             if 'Voltage 1V2' in line:
-                vars = line.split()
+
                 vars = line.split("|")
                 voltage_1v2 = vars[2]
             if 'Voltage 1V2_SRM' in line:
-                vars = line.split()
+
                 vars = line.split("|")
                 voltage_1V2_SRM = vars[2]
 
 
-        print(checkpoint_cpu_environment_command)
-        print(cpu_temperature)
-        print(cpu_temperature_internal)
-        print(ddr_temperature)
-        print(wifi1_temperature)
-        print(voltage_3v3)
-        print(voltage_12v)
-        print(voltage_1v8)
-        print(voltage_0v9)
-        print(voltage_1v2)
-        print(voltage_1V2_SRM)
+        # print(checkpoint_cpu_environment_command)
+        # print(cpu_temperature)
+        # print(cpu_temperature_internal)
+        # print(ddr_temperature)
+        # print(wifi1_temperature)
+        # print(voltage_3v3)
+        # print(voltage_12v)
+        # print(voltage_1v8)
+        # print(voltage_0v9)
+        # print(voltage_1v2)
+        # print(voltage_1V2_SRM)
         # print(cpu_temp)
 
         # disconnect
@@ -230,6 +231,8 @@ if __name__ == '__main__':
         checkpoint_cpu_voltage_0v9.set(voltage_1v2)
         checkpoint_cpu_voltage_1v2.set(voltage_1v2)
         checkpoint_cpu_voltage_1v2_SRM.set(voltage_1V2_SRM)
+
+        time.sleep(60)  # Set the seconds to get the intervals
 
 
 
