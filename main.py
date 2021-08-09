@@ -1,15 +1,11 @@
 #!/usr/bin/python3
+import sys
+import time
+import yaml
 from netmiko import ConnectHandler, ssh_exception
 from paramiko.ssh_exception import SSHException
-from prometheus_client import start_http_server, Summary
 from prometheus_client import Gauge
-from prometheus_client.core import GaugeMetricFamily, REGISTRY, CounterMetricFamily
-import random
-from getpass import getpass
-import yaml
-import sys
-import os
-import time
+from prometheus_client import start_http_server
 
 # get credentials
 with open(r'user_credentials.yaml') as yamlfile:
@@ -25,30 +21,30 @@ if __name__ == '__main__':
 
     # define gauges
     checkpoint_current_remote_users_count = Gauge('checkpoint_current_remote_users_count',
-                                                       'This is gauge to get Current Remote Users in Checkpoint')
+                                                  'This is gauge to get Current Remote Users in Checkpoint')
     checkpoint_peak_users_count = Gauge('checkpoint_peak_users_count',
-                                            'This is gauge to get Peak number of users in Checkpoint')
+                                        'This is gauge to get Peak number of users in Checkpoint')
     checkpoint_cpu_user_time_percentage = Gauge('checkpoint_cpu_user_time_percentage',
                                                 'This is gauge to get cpu user time in percentage of Checkpoint')
     checkpoint_cpu_system_time_percentage = Gauge('checkpoint_cpu_system_time_percentage',
-                                                'This is gauge to get system time in percentage of Checkpoint')
+                                                  'This is gauge to get system time in percentage of Checkpoint')
     checkpoint_cpu_idle_percentage = Gauge('checkpoint_cpu_idle_time_percentage',
-                                                'This is gauge to get cpu Idle time in percentage of Checkpoint')
+                                           'This is gauge to get cpu Idle time in percentage of Checkpoint')
     checkpoint_cpu_usage_percentage = Gauge('checkpoint_cpu_usage_percentage',
-                                                'This is gauge to get cpu usage in percentage of Checkpoint')
+                                            'This is gauge to get cpu usage in percentage of Checkpoint')
     checkpoint_cpu_interrupts_per_second_count = Gauge('checkpoint_cpu_interrupts_per_second_count',
-                                                'This is gauge to get cpu interrupts per second count of Checkpoint')
+                                                       'This is gauge to get cpu interrupts per second count of Checkpoint')
     checkpoint_cpu_user_count_number = Gauge('checkpoint_cpu_user_count_number',
-                                                'This is gauge to get cpu number in count of Checkpoint')
+                                             'This is gauge to get cpu number in count of Checkpoint')
     checkpoint_cpu_temperature = Gauge('checkpoint_cpu_temperature',
-                                             'This is gauge to get cpu temperature in celsius of Checkpoint')
+                                       'This is gauge to get cpu temperature in celsius of Checkpoint')
     checkpoint_cpu_temperature_internal = Gauge('checkpoint_cpu_temperature_internal',
-                                             'This is gauge to get cpu internal temperature in celsius of Checkpoint')
+                                                'This is gauge to get cpu internal temperature in celsius of Checkpoint')
     checkpoint_cpu_ddr_temperature = Gauge('checkpoint_cpu_ddr_temperature',
-                                             'This is gauge to get cpu ddr temperature in celsius of Checkpoint')
+                                           'This is gauge to get cpu ddr temperature in celsius of Checkpoint')
     checkpoint_cpu_wifi1_temperature = Gauge('checkpoint_cpu_wifi1_temperature',
-                                           'This is gauge to get cpu WiFi1 temperature in celsius of Checkpoint')
-    checkpoint_cpu_voltage_3v3= Gauge('checkpoint_cpu_voltage_3v3',
+                                             'This is gauge to get cpu WiFi1 temperature in celsius of Checkpoint')
+    checkpoint_cpu_voltage_3v3 = Gauge('checkpoint_cpu_voltage_3v3',
                                        'This is gauge to get cpu voltage of 3v3 in volt of Checkpoint')
     checkpoint_cpu_voltage_12v = Gauge('checkpoint_cpu_voltage_12v',
                                        'This is gauge to get cpu voltage of 12v in volt of Checkpoint')
@@ -59,29 +55,22 @@ if __name__ == '__main__':
     checkpoint_cpu_voltage_1v2 = Gauge('checkpoint_cpu_voltage_1v2',
                                        'This is gauge to get cpu voltage of 1v2 in volt of Checkpoint')
     checkpoint_cpu_voltage_1v2_SRM = Gauge('checkpoint_cpu_voltage_1v2_SRM',
-                                       'This is gauge to get cpu voltage of 1v2 SRM in volt of Checkpoint')
+                                           'This is gauge to get cpu voltage of 1v2 SRM in volt of Checkpoint')
 
     # os.system('python -m http.server 9994 --bind 192.168.1.135')
-    start_http_server(9994) # Localhost by default at http://localhost:9994/
-
+    start_http_server(9994)  # Localhost by default at http://localhost:9994/
 
     while True:
-
-
-
         # define connector
-
         fwext = {
             'device_type': device_type,
             'host': ip,
             'username': user,
             'password': passwd,
         }
-
         hostname = host_name
 
         # try to connect
-
         try:
             net_connect = ConnectHandler(**fwext)
         except SSHException as e:  # replace with netmiko exception
@@ -150,66 +139,40 @@ if __name__ == '__main__':
         for line in checkpoint_cpu_environment_lines:
             # Temperature Sensors
             if 'CPU Temperature ' in line:
-
                 vars = line.split("|")
                 cpu_temperature = vars[2]
 
             if 'CPU Temperature(internal)' in line:
-
                 vars = line.split("|")
                 cpu_temperature_internal = vars[2]
 
             if 'DDR Temperature' in line:
-
                 vars = line.split("|")
                 ddr_temperature = vars[2]
 
             if 'WIFI1 Temperature' in line:
-
                 vars = line.split("|")
                 wifi1_temperature = vars[2]
 
             # Voltage Sensors
             if 'Voltage 3V3' in line:
-
                 vars = line.split("|")
                 voltage_3v3 = vars[2]
             if 'Voltage 12V' in line:
-
                 vars = line.split("|")
                 voltage_12v = vars[2]
             if 'Voltage 1V8' in line:
-
                 vars = line.split("|")
                 voltage_1v8 = vars[2]
             if 'Voltage 0V9' in line:
-
                 vars = line.split("|")
                 voltage_0v9 = vars[2]
             if 'Voltage 1V2' in line:
-
                 vars = line.split("|")
                 voltage_1v2 = vars[2]
             if 'Voltage 1V2_SRM' in line:
-
                 vars = line.split("|")
                 voltage_1V2_SRM = vars[2]
-
-
-        # print(checkpoint_cpu_environment_command)
-        # print(cpu_temperature)
-        # print(cpu_temperature_internal)
-        # print(ddr_temperature)
-        # print(wifi1_temperature)
-        # print(voltage_3v3)
-        # print(voltage_12v)
-        # print(voltage_1v8)
-        # print(voltage_0v9)
-        # print(voltage_1v2)
-        # print(voltage_1V2_SRM)
-        # print(cpu_temp)
-
-        # disconnect
 
         net_connect.disconnect()
 
@@ -233,6 +196,3 @@ if __name__ == '__main__':
         checkpoint_cpu_voltage_1v2_SRM.set(voltage_1V2_SRM)
 
         time.sleep(60)  # Set the seconds to get the intervals
-
-
-

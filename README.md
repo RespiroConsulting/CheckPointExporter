@@ -15,6 +15,7 @@ Second option is exposing data over HTTP (on specific port) (here we are using 9
       pip3 install netmiko
       pip3 install paramiko
       pip3 install prometheus_client
+      pip install PyYAML
    ```
 (Tip: It should be installed using pip3 only which is compatible for python 3)
 
